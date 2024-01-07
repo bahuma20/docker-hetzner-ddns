@@ -8,19 +8,21 @@ import (
 )
 
 const (
-	EnvZoneName       = "ZONE_NAME"
-	EnvApiToken       = "API_TOKEN"
-	EnvRecordType     = "RECORD_TYPE"
-	EnvRecordName     = "RECORD_NAME"
-	EnvCronExpression = "CRON_EXPRESSION"
-	EnvTimeToLive     = "TTL"
+	EnvZoneName        = "ZONE_NAME"
+	EnvApiToken        = "API_TOKEN"
+	EnvRecordType      = "RECORD_TYPE"
+	EnvRecordName      = "RECORD_NAME"
+	EnvCronExpression  = "CRON_EXPRESSION"
+	EnvTimeToLive      = "TTL"
+	EnvFritzboxAddress = "FRITZBOX_ADDRESS"
 
-	DescZoneName       = "The DNS zone that DDNS updates should be applied to."
-	DescApiToken       = "Your Hetzner API token."
-	DescRecordType     = "The record type of your zone. If your zone uses an IPv4 address use `A`. Use `AAAA` if it uses an IPv6 address."
-	DescRecordName     = "The name of the DNS-record that DDNS updates should be applied to. This could be `sub` if you like to update the subdomain `sub.example.com` of `example.com`. The default value is `@`"
-	DescCronExpression = "The cron expression of the DDNS update interval. The default is every 5 minutes - `*/5 * * * *`"
-	DescTimeToLive     = "Time to live of the recourd"
+	DescZoneName        = "The DNS zone that DDNS updates should be applied to."
+	DescApiToken        = "Your Hetzner API token."
+	DescRecordType      = "The record type of your zone. If your zone uses an IPv4 address use `A`. Use `AAAA` if it uses an IPv6 address."
+	DescRecordName      = "The name of the DNS-record that DDNS updates should be applied to. This could be `sub` if you like to update the subdomain `sub.example.com` of `example.com`. The default value is `@`"
+	DescCronExpression  = "The cron expression of the DDNS update interval. The default is every 5 minutes - `*/5 * * * *`"
+	DescTimeToLive      = "Time to live of the record"
+	DescFritzboxAddress = "If set it will determine the IP from this fritzbox. Can be a domain name (like `fritz.box`) or an IP address (like `192.168.178.1`). If not set it will determine IP from some online service."
 
 	DefaultRecordName     = "@"
 	DefaultCronExpression = "*/5 * * * *"
@@ -54,7 +56,8 @@ type CronConf struct {
 }
 
 type ProviderConf struct {
-	IpVersion string
+	IpVersion       string
+	FritzBoxAddress string
 }
 
 type ArgumentMissingError struct {
@@ -79,6 +82,8 @@ func Read() DynDnsConf {
 	flag.StringVar(&cronExpression, EnvCronExpression, cronExpression, DescCronExpression)
 	var ttl = DefaultTimeToLive
 	flag.IntVar(&ttl, EnvTimeToLive, ttl, DescTimeToLive)
+	var fritzboxAddress string
+	flag.StringVar(&fritzboxAddress, EnvFritzboxAddress, fritzboxAddress, DescFritzboxAddress)
 
 	// Parse flags
 	flag.Parse()
@@ -97,7 +102,8 @@ func Read() DynDnsConf {
 			TTL:        ttl,
 		},
 		ProviderConf: ProviderConf{
-			IpVersion: ipVersion,
+			IpVersion:       ipVersion,
+			FritzBoxAddress: fritzboxAddress,
 		},
 		CronConf: CronConf{CronExpression: cronExpression},
 	}

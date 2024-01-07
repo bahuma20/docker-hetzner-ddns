@@ -14,8 +14,17 @@ func main() {
 		ApiToken: dynDnsConf.DnsConf.ApiToken,
 	}
 
-	ipProvider := ip.Ipify{
-		IpVersion: dynDnsConf.ProviderConf.IpVersion,
+	var ipProvider ip.Provider
+
+	if dynDnsConf.ProviderConf.FritzBoxAddress != "" {
+		ipProvider = ip.FritzBox{
+			IpVersion:       dynDnsConf.ProviderConf.IpVersion,
+			FritzBoxAddress: dynDnsConf.ProviderConf.FritzBoxAddress,
+		}
+	} else {
+		ipProvider = ip.Ipify{
+			IpVersion: dynDnsConf.ProviderConf.IpVersion,
+		}
 	}
 
 	ddnsParameter := ddns.Parameter{

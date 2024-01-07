@@ -42,6 +42,7 @@ docker run kutzilla/hetzner-ddns example.com my-secret-api-token A
 * `-e RECORD_NAME` - The name of the DNS-record that DDNS updates should be applied to. This could be `sub` if you like to update the subdomain `sub.example.com` of `example.com`. The default value is `@`.
 * `-e CRON_EXPRESSION` - The cron expression of the DDNS update interval. The default is every 5 minutes - `*/5 * * * *`.
 * `-e TTL` - The TTL (Time To Live) value specifies how long the record is valid before the nameservers are prompted to reload the zone file. The default is `86400`.
+* `-e FRITZBOX_ADDRESS` - If set it will determine the IP from this fritzbox. Can be a domain name (like `fritz.box`) or an IP address (like `192.168.178.1`). If not set it will determine IP from some online service.
 
 ## Build
 
