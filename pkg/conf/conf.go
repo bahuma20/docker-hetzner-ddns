@@ -14,7 +14,7 @@ const (
 	EnvRecordName      = "RECORD_NAME"
 	EnvCronExpression  = "CRON_EXPRESSION"
 	EnvTimeToLive      = "TTL"
-	EnvFritzboxAddress = "FRITZBOX_ADDRESS"
+	EnvFritzboxAddress = "FRITZ_BOX_ADDRESS"
 
 	DescZoneName        = "The DNS zone that DDNS updates should be applied to."
 	DescApiToken        = "Your Hetzner API token."
